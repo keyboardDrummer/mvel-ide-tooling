@@ -15,6 +15,7 @@ Create an `example.mevl` file, open it and paste in the following to see the par
 ```java
 // I removed all the $ signs in the identifier because apparently the identifier parser regex doesn't allow them.
 // I also commented out all the lines with casts in them like: (<TypeToCastTo>) <expression>>
+// Because the delta to add support for casts is still missing
 output.taxEventGenerationBusinessInfos = (output.taxEventGenerationBusinessInfos == null ? new java.util.ArrayList() : output.taxEventGenerationBusinessInfos);
 LocalDateTime taxEventsEffectiveWindowStartDateUTC = input.taxEventsWindowStartDateUTC;
 if (taxEventsEffectiveWindowStartDateUTC < firstFilingStartDate){
