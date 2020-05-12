@@ -1,0 +1,87 @@
+// I removed all the $ signs in the identifier because apparently the identifier parser regex doesn't allow them.
+// I also commented out all the lines with casts in them like: (<TypeToCastTo>) <expression>>
+// Because the delta to add support for casts is still missing
+output.taxEventGenerationBusinessInfos = (output.taxEventGenerationBusinessInfos == null ? new java.util.ArrayList() : output.taxEventGenerationBusinessInfos);
+LocalDateTime taxEventsEffectiveWindowStartDateUTC = input.taxEventsWindowStartDateUTC;
+if (taxEventsEffectiveWindowStartDateUTC < firstFilingStartDate){
+	taxEventsEffectiveWindowStartDateUTC = firstFilingStartDate;
+}
+DateRange taxEventGenerationWindow = DateRange.builder().startDateUTC(taxEventsEffectiveWindowStartDateUTC).endDateUTC(input.taxEventsWindowEndDateUTC).build();
+ArrayList dataPeriods = new java.util.ArrayList();
+
+// Commented out because the [ReturnType.VAT] syntax isn't supported.
+// if (input.sellerJurisdictionTaxConfig.applicableReturnsConfigMap[ReturnType.VAT].filingFrequencyInMonths.equals(3)){
+    dataPeriods.addAll(TaxEventGenerationUtility.generateDataPeriodsForWindow(taxEventGenerationWindow, "JANUARY-MARCH;APRIL-JUNE;JULY-SEPTEMBER;OCTOBER-DECEMBER;"));
+// }
+// else if (input.sellerJurisdictionTaxConfig.applicableReturnsConfigMap[ReturnType.VAT].filingFrequencyInMonths.equals(1)){
+    dataPeriods.addAll(TaxEventGenerationUtility.generateDataPeriodsForWindow(taxEventGenerationWindow, "JANUARY-JANUARY;FEBRUARY-FEBRUARY;MARCH-MARCH;APRIL-APRIL;MAY-MAY;JUNE-JUNE;JULY-JULY;AUGUST-AUGUST;SEPTEMBER-SEPTEMBER;OCTOBER-OCTOBER;NOVEMBER-NOVEMBER;DECEMBER-DECEMBER;"));
+// }
+
+// String taxOfficeState = ((SellerDETaxConfig) input.getSellerJurisdictionTaxConfig()).getTaxOfficeInfo().getAddress.getStateOrRegion();
+// String steuernummer = ((SellerDETaxConfig) input.getSellerJurisdictionTaxConfig()).getSteuernummer();
+
+String taxOfficeNumber = null; String districtNumber = null; String pin = null;
+
+if (taxOfficeState.equals("Berlin")) {
+    taxOfficeNumber = steuernummer.substring(0,2);
+    districtNumber = steuernummer.substring(2,5);
+    pin = steuernummer.substring(5);
+}
+else if (taxOfficeState.equals("Nordrhein-Westfalen")){
+    taxOfficeNumber = steuernummer.substring(0,3);
+    districtNumber = steuernummer.substring(3,7);
+    pin = steuernummer.substring(7);
+}
+String standardSteuernummer = taxOfficeNumber + "/" + districtNumber + "/" + pin;
+TaxEventGenerationBusinessInfo tempTaxEvent = null;
+String filingMonthMM = null;
+String filingYear = null;
+// Commented out because a bug in the parser that causes this to Stack overflow. Will look into it.
+/*
+for(int i = 0; i < dataPeriods.size(); i++){
+	// filingMonthMM = ((DateRange) dataPeriods[i]).endDateUTC.format(DateTimeFormatter.ofPattern("MM"));
+	// filingYear = String.valueOf(((DateRange) dataPeriods[i]).endDateUTC.year);
+	// taxEventsEffectiveWindowStartDateUTC = ((DateRange) dataPeriods[i]).startDateUTC;
+	if (taxEventsEffectiveWindowStartDateUTC < firstFilingStartDate)
+		taxEventsEffectiveWindowStartDateUTC = firstFilingStartDate;
+		tempTaxEvent = TaxEventGenerationBusinessOutput.TaxEventGenerationBusinessInfo
+            .builder()
+            .obfuscatedAccountId(input.obfuscatedAccountId)
+            .jurisdictionId(input.jurisdictionId)
+            .returnType(input.returnType)
+            .reportType(ReportType.AGGREGATED.toString())
+            .dataPeriodStartDateUTC(taxEventsEffectiveWindowStartDateUTC)
+            //.dataPeriodEndDateUTC(((DateRange) dataPeriods[i]).endDateUTC)
+            //.deadlineUTC(((DateRange) dataPeriods[i]).endDateUTC.plusDays(10))
+            .taxEventType("PAYMENT")
+            .paymentReference(standardSteuernummer + "/" + "USt" + "/" + filingMonthMM.toString() + "/" + filingYear + "/" + ((SellerDETaxConfig) input.getSellerJurisdictionTaxConfig()).getSellerName() + "/")
+            //.bankName(((SellerDETaxConfig) input.getSellerJurisdictionTaxConfig()).taxOfficeInfo.bankAccountDetails.bankName)
+            //.accountName(((SellerDETaxConfig) input.getSellerJurisdictionTaxConfig()).taxOfficeInfo.bankAccountDetails.accountName)
+            //.swift(((SellerDETaxConfig) input.getSellerJurisdictionTaxConfig()).taxOfficeInfo.bankAccountDetails.swift)
+            //.iban(((SellerDETaxConfig) input.getSellerJurisdictionTaxConfig()).taxOfficeInfo.bankAccountDetails.iban)
+            //.paymentAddressLine1(((SellerDETaxConfig) input.getSellerJurisdictionTaxConfig()).taxOfficeInfo.bankAccountDetails.bankAddress.line1)
+            //.paymentAddressLine2(((SellerDETaxConfig) input.getSellerJurisdictionTaxConfig()).taxOfficeInfo.bankAccountDetails.bankAddress.line2)
+            //.paymentAddressLine3(((SellerDETaxConfig) input.getSellerJurisdictionTaxConfig()).taxOfficeInfo.bankAccountDetails.bankAddress.line3)
+            //.paymentAddressCity(((SellerDETaxConfig) input.getSellerJurisdictionTaxConfig()).taxOfficeInfo.bankAccountDetails.bankAddress.city)
+            //.paymentAddressStateOrRegion(((SellerDETaxConfig) input.getSellerJurisdictionTaxConfig()).taxOfficeInfo.bankAccountDetails.bankAddress.stateOrRegion)
+            //.paymentAddressCountyOrDistrict(((SellerDETaxConfig) input.getSellerJurisdictionTaxConfig()).taxOfficeInfo.bankAccountDetails.bankAddress.countyOrDistrict)
+            //.paymentAddressPostalCode(((SellerDETaxConfig) input.getSellerJurisdictionTaxConfig()).taxOfficeInfo.bankAccountDetails.bankAddress.postalCode)
+            //.paymentAddressCountryCode(((SellerDETaxConfig) input.getSellerJurisdictionTaxConfig()).taxOfficeInfo.bankAccountDetails.bankAddress.countryCode)
+            .zeroFilingApplicable(false)
+            .build();
+	output.taxEventGenerationBusinessInfos.add(tempTaxEvent);
+    tempTaxEvent = TaxEventGenerationBusinessOutput.TaxEventGenerationBusinessInfo
+        .builder()
+        .obfuscatedAccountId(input.obfuscatedAccountId)
+        .jurisdictionId(input.jurisdictionId)
+        .returnType(input.returnType)
+            .reportType(ReportType.AGGREGATED.toString())
+        .dataPeriodStartDateUTC(taxEventsEffectiveWindowStartDateUTC)
+        //.dataPeriodEndDateUTC(((DateRange) dataPeriods[i]).endDateUTC)
+        //.deadlineUTC(((DateRange) dataPeriods[i]).endDateUTC.plusDays(10))
+        .taxEventType("SUBMISSION")
+        .zeroFilingApplicable(true)
+        .build();
+	output.taxEventGenerationBusinessInfos.add(tempTaxEvent);
+}
+*/

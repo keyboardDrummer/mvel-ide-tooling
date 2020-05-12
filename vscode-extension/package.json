@@ -1,0 +1,101 @@
+{
+	"name": "vscode-mevl",
+	"displayName": "MEVL IDE",
+	"description": "Rich language support for MEVL",
+	"publisher": "keyboardDrummer",
+	"license": "MIT",
+	"version": "0.0.1",
+	"keywords": [
+		"mevl",
+		"ide"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/keyboardDrummer/mevl-ide-tooling"
+	},
+	"engines": {
+		"vscode": "^1.30.x"
+	},
+	"categories": [
+		"Programming Languages",
+		"Linters",
+		"Formatters",
+		"Language Packs"
+	],
+	"activationEvents": [
+		"onLanguage:MEVL"
+	],
+	"main": "./out/extension",
+	"contributes": {
+		"languages": [
+			{
+				"id": "MEVL",
+				"aliases": [
+					"MEVL"
+				],
+				"extensions": [
+					".mevl"
+				],
+				"configuration": "./src/mevl/language-configuration.json"
+			}
+		],
+		"grammars": [
+			{
+				"language": "MEVL",
+				"scopeName": "source.mevl",
+				"path": "./src/mevl/tmLanguage.json"
+			}
+		],
+		"configuration": {
+			"type": "object",
+			"title": "MEVL",
+			"properties": {
+				"miksiloMEVL.trace.server": {
+					"scope": "window",
+					"type": "string",
+					"enum": [
+						"off",
+						"messages",
+						"verbose"
+					],
+					"default": "off",
+					"description": "Traces the communication between VSCode and the language server."
+				},
+				"miksilo.jar": {
+					"scope": "application",
+					"type": "string",
+					"description": "Configures the location of the .jar file for Miksilo."
+				},
+				"java.home": {
+					"scope": "machine",
+					"type": "string",
+					"description": "Configures the location of the java home."
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile && cd .. && sbt vscodeprepublish",
+		"compile": "tsc -p ./",
+		"watch": "tsc -w -p ./",
+		"update-vscode": "node ./node_modules/vscode/bin/install",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"create-assembly": "cd Miksilo && sbt assembly",
+		"move-assembly": "npm run create-assembly &&",
+		"try": "npm run vscode:prepublish && code --extensionDevelopmentPath=$PWD"
+	},
+	"dependencies": {
+		"vscode-extension-telemetry": "0.1.2",
+		"expand-home-dir": "^0.0.3",
+		"find-java-home": "1.0.0",
+		"path-exists": "^3.0.0",
+		"vscode-languageclient": "^5.2.1",
+		"vscode-languageserver-protocol": "^3.14.1"
+	},
+	"devDependencies": {
+		"@types/mocha": "^2.2.48",
+		"@types/node": "^6.14.7",
+		"typescript": "^3.8.2",
+		"vscode": "1.1.35"
+	}
+}
