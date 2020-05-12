@@ -9,9 +9,9 @@ To try out the language tooling in VS Code, make sure the VS Code executable `co
 
 `yarn install` inside the `vscode-extension` directory
 
-`sbt vscode` in the root directory
+`sbt vscode` in the root directory, wait for that command to start VSCode. The VSCode instance should show `[Extension Developement Host]` in the title bar.
 
-Create an `example.mevl` file, open it and paste in the following to see the parser error highlighting work:
+Create an `example.mvel` file, open it and paste in the following to see the parser error highlighting work:
 ```java
 // I removed all the $ signs in the identifier because apparently the identifier parser regex doesn't allow them.
 // I also commented out all the lines with casts in them like: (<TypeToCastTo>) <expression>>

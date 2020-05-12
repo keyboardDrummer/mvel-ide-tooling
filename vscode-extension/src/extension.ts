@@ -13,8 +13,8 @@ interface LanguageConfiguration {
 }
 const languages: Array<LanguageConfiguration> = [
     {
-         vscodeName: "MEVL",
-         miksiloName: "mevl"
+         vscodeName: "MVEL",
+         miksiloName: "mvel"
     }
 ]
 let reporter: TelemetryReporter;
@@ -144,12 +144,12 @@ async function getMode(): Promise<Mode | undefined> {
 	    return new JVMMode(jvmData, settingsJar, "Miksilo jar specified in settings.");
 	}
 
-	const jar: string = `${__dirname}/MEVLLanguageServer.jar`;
+	const jar: string = `${__dirname}/MVELLanguageServer.jar`;
 	if (fs.existsSync(jar)) {
 	    return new JVMMode(jvmData, jar, `Found built-in jar.`);
 	}
 
-	const nodeProgram: string = workspace.getConfiguration('miksilo').get("js") || `${__dirname}/MEVLLanguageServer.js`
+	const nodeProgram: string = workspace.getConfiguration('miksilo').get("js") || `${__dirname}/MVELLanguageServer.js`
 	if (nodeProgram) {
 	    return new JSMode(nodeProgram)
 	}

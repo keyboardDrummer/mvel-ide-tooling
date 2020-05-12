@@ -2,7 +2,7 @@ import sbt.Keys.{homepage, scmInfo}
 
 import scala.sys.process._
 
-lazy val mevl = project
+lazy val mvel = project
   .in(file("."))
   .aggregate(
     languageServer,
@@ -35,10 +35,11 @@ lazy val assemblySettings = Seq(
 
 def languageServerCommonTask(assemblyFile: String) = {
   val extension = assemblyFile.split("\\.").last
-  val removePrevious = Process(Seq("rm", "-f", "./vscode-extension/out/MEVLLanguageServer.jar"))
-  val copyJar = Process(Seq("cp", assemblyFile, s"./vscode-extension/out/MEVLLanguageServer.${extension}"))
+  val removePrevious = Process(Seq("rm", "-f", "./vscode-extension/out/MVELLanguageServer.jar"))
+  val mkOutDir = Process(Seq("mkdir", s"./vscode-extension/out"))
+  val copyJar = Process(Seq("cp", assemblyFile, s"./vscode-extension/out/MVELLanguageServer.${extension}"))
   val yarn = Process(Seq("yarn", "compile"), file("./vscode-extension"))
-  removePrevious.#&&(copyJar).#&&(yarn)
+  mkOutDir.#&&(removePrevious).#&&(copyJar).#&&(yarn)
 }
 
 def vscodeCommonTask(assemblyFile: String) = {
@@ -58,14 +59,14 @@ lazy val languageServer = project.
 
     vscodeprepublish := {
       val assemblyFile: String = assembly.value.getAbsolutePath
-      val copyJar = Process(Seq("cp", assemblyFile, s"./vscode-extension/out/MEVLLanguageServer.jar"))
+      val copyJar = Process(Seq("cp", assemblyFile, s"./vscode-extension/out/MVELLanguageServer.jar"))
       copyJar.run
     },
   ).
   settings(
     name := "languageServer",
 
-    mainClass in Compile := Some("mevl.Program"),
+    mainClass in Compile := Some("mvel.Program"),
     // https://mvnrepository.com/artifact/com.typesafe.play/play-json
     libraryDependencies += "com.lihaoyi" %% "upickle" % "0.8.0",
 

@@ -1,4 +1,4 @@
-package mevl
+package mvel
 
 import miksilo.modularLanguages.core.deltas._
 import miksilo.modularLanguages.core.deltas.grammars.{BodyGrammar, LanguageGrammars}

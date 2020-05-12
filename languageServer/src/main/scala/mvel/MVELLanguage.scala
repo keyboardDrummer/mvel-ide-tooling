@@ -1,32 +1,31 @@
-package mevl
+package mvel
 
 import miksilo.editorParser.parsers.editorParsers.UntilTimeStopFunction
 import miksilo.languageServer.core.language.Language
-import miksilo.modularLanguages.core.SolveConstraintsDelta
 import miksilo.modularLanguages.core.deltas.{LanguageFromDeltas, ParseUsingTextualGrammar}
-import miksilo.modularLanguages.deltas.{ClearPhases, HasNameDelta}
 import miksilo.modularLanguages.deltas.bytecode.types.{ArrayTypeDelta, QualifiedObjectTypeDelta, TypeSkeleton, UnqualifiedObjectTypeDelta}
+import miksilo.modularLanguages.deltas.expression._
 import miksilo.modularLanguages.deltas.expression.additive.{AdditionDelta, AdditivePrecedenceDelta, SubtractionDelta}
 import miksilo.modularLanguages.deltas.expression.bitwise._
 import miksilo.modularLanguages.deltas.expression.logical.{LogicalAndDelta, LogicalNotDelta, LogicalOrDelta}
 import miksilo.modularLanguages.deltas.expression.multiplicative.{DivideDelta, ModuloDelta, MultiplicativePrecedenceDelta, MultiplyDelta}
 import miksilo.modularLanguages.deltas.expression.prefix._
 import miksilo.modularLanguages.deltas.expression.relational._
-import miksilo.modularLanguages.deltas.expression._
 import miksilo.modularLanguages.deltas.javac.CallVariableDelta
 import miksilo.modularLanguages.deltas.javac.classes.{AssignToMemberDelta, SelectFieldDelta}
 import miksilo.modularLanguages.deltas.javac.expressions.literals.BooleanLiteralDelta
 import miksilo.modularLanguages.deltas.javac.methods.call.CallMemberDelta
-import miksilo.modularLanguages.deltas.javac.methods.{BlockLanguageDelta, MemberSelectorDelta, ReturnExpressionDelta}
+import miksilo.modularLanguages.deltas.javac.methods.{MemberSelectorDelta, ReturnExpressionDelta}
 import miksilo.modularLanguages.deltas.javac.statements.{ExpressionAsStatementDelta, ForLoopContinueDelta, WhileBreakDelta}
 import miksilo.modularLanguages.deltas.javac.types.BooleanTypeDelta
 import miksilo.modularLanguages.deltas.method.call.CallDelta
-import miksilo.modularLanguages.deltas.solidity.{AssignToArrayMember, FixedSizeArrayTypeDelta, MultiFileDelta}
-import miksilo.modularLanguages.deltas.statement.assignment._
+import miksilo.modularLanguages.deltas.solidity.{AssignToArrayMember, FixedSizeArrayTypeDelta}
 import miksilo.modularLanguages.deltas.statement._
+import miksilo.modularLanguages.deltas.statement.assignment._
 import miksilo.modularLanguages.deltas.trivia.{SlashSlashLineCommentsDelta, SlashStarBlockCommentsDelta}
+import miksilo.modularLanguages.deltas.{ClearPhases, HasNameDelta}
 
-object MEVLLanguage {
+object MVELLanguage {
 
   private val genericDeltas = Seq(
     BitwiseOrAssignmentDelta, BitwiseXorAssignmentDelta, BitwiseAndAssignmentDelta,

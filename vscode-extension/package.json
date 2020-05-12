@@ -6,7 +6,7 @@
 	"license": "MIT",
 	"version": "0.0.1",
 	"keywords": [
-		"mevl",
+		"mvel",
 		"ide"
 	],
 	"repository": {
@@ -23,34 +23,34 @@
 		"Language Packs"
 	],
 	"activationEvents": [
-		"onLanguage:MEVL"
+		"onLanguage:MVEL"
 	],
 	"main": "./out/extension",
 	"contributes": {
 		"languages": [
 			{
-				"id": "MEVL",
+				"id": "MVEL",
 				"aliases": [
-					"MEVL"
+					"MVEL"
 				],
 				"extensions": [
-					".mevl"
+					".mvel"
 				],
-				"configuration": "./src/mevl/language-configuration.json"
+				"configuration": "./src/mvel/language-configuration.json"
 			}
 		],
 		"grammars": [
 			{
-				"language": "MEVL",
-				"scopeName": "source.mevl",
-				"path": "./src/mevl/tmLanguage.json"
+				"language": "MVEL",
+				"scopeName": "source.mvel",
+				"path": "./src/mvel/tmLanguage.json"
 			}
 		],
 		"configuration": {
 			"type": "object",
-			"title": "MEVL",
+			"title": "MVEL",
 			"properties": {
-				"miksiloMEVL.trace.server": {
+				"miksiloMVEL.trace.server": {
 					"scope": "window",
 					"type": "string",
 					"enum": [

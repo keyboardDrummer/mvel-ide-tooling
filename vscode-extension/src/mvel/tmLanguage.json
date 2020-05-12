@@ -6,7 +6,7 @@
   ],
   "version": "https://github.com/atom/language-java/commit/2e179ceac423403eb5bf0eff26884093c3edba6f",
   "name": "Java",
-  "scopeName": "source.mevl",
+  "scopeName": "source.mvel",
   "patterns": [
     {
       "begin": "\\b(package)\\b\\s*",
