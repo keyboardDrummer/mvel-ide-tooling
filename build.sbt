@@ -36,7 +36,7 @@ lazy val assemblySettings = Seq(
 def languageServerCommonTask(assemblyFile: String) = {
   val extension = assemblyFile.split("\\.").last
   val removePrevious = Process(Seq("rm", "-f", "./vscode-extension/out/MVELLanguageServer.jar"))
-  val mkOutDir = Process(Seq("mkdir", s"./vscode-extension/out"))
+  val mkOutDir = Process(Seq("mkdir", "-p", s"./vscode-extension/out"))
   val copyJar = Process(Seq("cp", assemblyFile, s"./vscode-extension/out/MVELLanguageServer.${extension}"))
   val yarn = Process(Seq("yarn", "compile"), file("./vscode-extension"))
   mkOutDir.#&&(removePrevious).#&&(copyJar).#&&(yarn)
