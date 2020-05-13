@@ -2,6 +2,7 @@ package mvel
 
 import miksilo.editorParser.parsers.editorParsers.UntilTimeStopFunction
 import miksilo.languageServer.core.language.Language
+import miksilo.modularLanguages.core.SolveConstraintsDelta
 import miksilo.modularLanguages.core.deltas.{LanguageFromDeltas, ParseUsingTextualGrammar}
 import miksilo.modularLanguages.deltas.bytecode.types.{ArrayTypeDelta, QualifiedObjectTypeDelta, TypeSkeleton, UnqualifiedObjectTypeDelta}
 import miksilo.modularLanguages.deltas.expression._
@@ -65,9 +66,8 @@ object MVELLanguage {
     ParenthesisInExpressionDelta, ExpressionDelta,
     BooleanTypeDelta,
     FixedSizeArrayTypeDelta, ArrayTypeDelta, TypeSkeleton,
-    //MultiFileDelta,
     HasNameDelta,
-    //SolveConstraintsDelta
+    SolveConstraintsDelta
   )
 
   val mevlSpecificDeltas = Seq(

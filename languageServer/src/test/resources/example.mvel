@@ -20,7 +20,9 @@ ArrayList dataPeriods = new java.util.ArrayList();
 // String taxOfficeState = ((SellerDETaxConfig) input.getSellerJurisdictionTaxConfig()).getTaxOfficeInfo().getAddress.getStateOrRegion();
 // String steuernummer = ((SellerDETaxConfig) input.getSellerJurisdictionTaxConfig()).getSteuernummer();
 
-String taxOfficeNumber = null; String districtNumber = null; String pin = null;
+String taxOfficeNumber = null;
+String districtNumber = null;
+String pin = null;
 
 if (taxOfficeState.equals("Berlin")) {
     taxOfficeNumber = steuernummer.substring(0,2);
