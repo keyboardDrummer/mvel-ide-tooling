@@ -19,12 +19,12 @@ Create an `example.mvel` file, open it and paste in the following to see the par
 output.taxEventGenerationBusinessInfos = (output.taxEventGenerationBusinessInfos == null ? new java.util.ArrayList() : output.taxEventGenerationBusinessInfos);
 LocalDateTime taxEventsEffectiveWindowStartDateUTC = input.taxEventsWindowStartDateUTC;
 if (taxEventsEffectiveWindowStartDateUTC < firstFilingStartDate){
-	taxEventsEffectiveWindowStartDateUTC = firstFilingStartDate
+	taxEventsEffectiveWindowStartDateUTC = firstFilingStartDate;
 }
 DateRange taxEventGenerationWindow = DateRange.builder().startDateUTC(taxEventsEffectiveWindowStartDateUTC).endDateUTC(input.taxEventsWindowEndDateUTC).build();
 ArrayList dataPeriods = new java.util.ArrayList();
 
-// Commented out because I guess the [ReturnType.VAT] syntax isn't supported.
+// Commented out because the [ReturnType.VAT] syntax isn't supported.
 // if (input.sellerJurisdictionTaxConfig.applicableReturnsConfigMap[ReturnType.VAT].filingFrequencyInMonths.equals(3)){
     dataPeriods.addAll(TaxEventGenerationUtility.generateDataPeriodsForWindow(taxEventGenerationWindow, "JANUARY-MARCH;APRIL-JUNE;JULY-SEPTEMBER;OCTOBER-DECEMBER;"));
 // }
@@ -32,13 +32,14 @@ ArrayList dataPeriods = new java.util.ArrayList();
     dataPeriods.addAll(TaxEventGenerationUtility.generateDataPeriodsForWindow(taxEventGenerationWindow, "JANUARY-JANUARY;FEBRUARY-FEBRUARY;MARCH-MARCH;APRIL-APRIL;MAY-MAY;JUNE-JUNE;JULY-JULY;AUGUST-AUGUST;SEPTEMBER-SEPTEMBER;OCTOBER-OCTOBER;NOVEMBER-NOVEMBER;DECEMBER-DECEMBER;"));
 // }
 
-// Commented out because I guess the cast syntax isn't supported yet.
 // String taxOfficeState = ((SellerDETaxConfig) input.getSellerJurisdictionTaxConfig()).getTaxOfficeInfo().getAddress.getStateOrRegion();
 // String steuernummer = ((SellerDETaxConfig) input.getSellerJurisdictionTaxConfig()).getSteuernummer();
 
-String taxOfficeNumber = null; String districtNumber = null; String pin = null;
+String taxOfficeNumber = null;
+String districtNumber = null;
+String pin = null;
 
-if (taxOfficeState.equals("Berlinn")) {
+if (taxOfficeState.equals("Berlin")) {
     taxOfficeNumber = steuernummer.substring(0,2);
     districtNumber = steuernummer.substring(2,5);
     pin = steuernummer.substring(5);
@@ -47,5 +48,21 @@ else if (taxOfficeState.equals("Nordrhein-Westfalen")){
     taxOfficeNumber = steuernummer.substring(0,3);
     districtNumber = steuernummer.substring(3,7);
     pin = steuernummer.substring(7);
+}
+String standardSteuernummer = taxOfficeNumber + "/" + districtNumber + "/" + pin;
+TaxEventGenerationBusinessInfo tempTaxEvent = null;
+String filingMonthMM = null;
+String filingYear = null;
+// Commented out because a bug in the parser that causes this to Stack overflow. Will look into it.
+for(int i = 0; i < dataPeriods.size(); i++){
+	// filingMonthMM = ((DateRange) dataPeriods[i]).endDateUTC.format(DateTimeFormatter.ofPattern("MM"));
+	// filingYear = String.valueOf(((DateRange) dataPeriods[i]).endDateUTC.year);
+	// taxEventsEffectiveWindowStartDateUTC = ((DateRange) dataPeriods[i]).startDateUTC;
+
+	if (taxEventsEffectiveWindowStartDateUTC < firstFilingStartDate) {
+		taxEventsEffectiveWindowStartDateUTC = firstFilingStartDate;
+    }
+
+	output.taxEventGenerationBusinessInfos.add(tempTaxEvent);
 }
 ```
