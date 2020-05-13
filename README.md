@@ -1,4 +1,4 @@
-MEVL IDE Tooling
+MVEL IDE Tooling
 ==========
 
 ### Getting started
