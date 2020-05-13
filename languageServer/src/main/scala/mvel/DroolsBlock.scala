@@ -10,7 +10,8 @@ import miksilo.modularLanguages.deltas.bytecode.types.{ArrayTypeDelta, Unqualifi
 import miksilo.modularLanguages.deltas.javac.classes.skeleton.JavaClassDelta
 import miksilo.modularLanguages.deltas.javac.methods.{AccessibilityFieldsDelta, MethodParameters}
 import miksilo.modularLanguages.deltas.method.MethodDelta
-import miksilo.modularLanguages.deltas.statement.{BlockDelta, StatementDelta}
+import miksilo.modularLanguages.deltas.method.MethodDelta.Shape
+import miksilo.modularLanguages.deltas.statement.{BlockDelta, LabelStatementDelta, StatementDelta}
 
 object DroolsBlock extends DeltaWithGrammar with DeltaWithPhase
 {
@@ -19,6 +20,7 @@ object DroolsBlock extends DeltaWithGrammar with DeltaWithPhase
 
   override def inject(language: Language): Unit = {
     super.inject(language)
+    LabelStatementDelta.isLabelScope.add(language, Shape, ())
     SolveConstraintsDelta.constraintCollector.add(language, (compilation, builder) => {
       val block = compilation.program.asInstanceOf[PathRoot]
       BlockDelta.collectConstraints(compilation, builder, block, builder.newScope(debugName = "programScope"))
@@ -27,16 +29,11 @@ object DroolsBlock extends DeltaWithGrammar with DeltaWithPhase
 
   override def transformGrammars(grammars: LanguageGrammars, state: Language): Unit = {
     import grammars._
-    val statements = find(StatementDelta.Grammar).manyVertical.as(BlockDelta.Statements).asNode(BlockDelta.Shape)
+    val statements = find(StatementDelta.Grammar).manyVertical.as(BlockDelta.Statements).asNode(Shape)
     find(BodyGrammar).inner = statements
   }
 
   override def transformProgram(program: Node, compilation: Compilation): Unit = {
-    val block = program
-    val mainArgument: Node = MethodParameters.neww("args", ArrayTypeDelta.neww(UnqualifiedObjectTypeDelta.neww("String")))
-    val method = MethodDelta.neww("main",VoidTypeDelta.voidType,Seq(mainArgument), block, static = true, AccessibilityFieldsDelta.PublicVisibility)
-    val javaClass = JavaClassDelta.neww(Seq.empty,"Block",Seq(method))
-    compilation.program = PathRoot(javaClass)
   }
 
   //TODO bring back. override def dependencies: Set[Contract] = Set(ImplicitObjectSuperClass, MethodDelta)

@@ -37,11 +37,12 @@ TaxEventGenerationBusinessInfo tempTaxEvent = null;
 String filingMonthMM = null;
 String filingYear = null;
 // Commented out because a bug in the parser that causes this to Stack overflow. Will look into it.
-/*
 for(int i = 0; i < dataPeriods.size(); i++){
 	// filingMonthMM = ((DateRange) dataPeriods[i]).endDateUTC.format(DateTimeFormatter.ofPattern("MM"));
 	// filingYear = String.valueOf(((DateRange) dataPeriods[i]).endDateUTC.year);
 	// taxEventsEffectiveWindowStartDateUTC = ((DateRange) dataPeriods[i]).startDateUTC;
+
+/*
 	if (taxEventsEffectiveWindowStartDateUTC < firstFilingStartDate)
 		taxEventsEffectiveWindowStartDateUTC = firstFilingStartDate;
 		tempTaxEvent = TaxEventGenerationBusinessOutput.TaxEventGenerationBusinessInfo
@@ -69,6 +70,7 @@ for(int i = 0; i < dataPeriods.size(); i++){
             //.paymentAddressCountryCode(((SellerDETaxConfig) input.getSellerJurisdictionTaxConfig()).taxOfficeInfo.bankAccountDetails.bankAddress.countryCode)
             .zeroFilingApplicable(false)
             .build();
+*/
 	output.taxEventGenerationBusinessInfos.add(tempTaxEvent);
     tempTaxEvent = TaxEventGenerationBusinessOutput.TaxEventGenerationBusinessInfo
         .builder()
@@ -84,4 +86,3 @@ for(int i = 0; i < dataPeriods.size(); i++){
         .build();
 	output.taxEventGenerationBusinessInfos.add(tempTaxEvent);
 }
-*/

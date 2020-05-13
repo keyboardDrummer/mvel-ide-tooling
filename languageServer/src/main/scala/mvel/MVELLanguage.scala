@@ -72,7 +72,6 @@ object MVELLanguage {
 
   val mevlSpecificDeltas = Seq(
     ParseUsingTextualGrammar(UntilTimeStopFunction(100)),
-    ClearPhases,
     DroolsBlock)
 
   val deltas = mevlSpecificDeltas ++ genericDeltas
