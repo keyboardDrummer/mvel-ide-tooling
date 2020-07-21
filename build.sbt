@@ -71,7 +71,7 @@ lazy val languageServer = project.
     libraryDependencies += "com.lihaoyi" %% "upickle" % "0.8.0",
 
     // https://mvnrepository.com/artifact/com.github.keyboardDrummer/modularlanguages
-    libraryDependencies += "com.github.keyboardDrummer" %% "modularlanguages" % "0.1.7"
+    libraryDependencies += "com.github.keyboardDrummer" %% "modularlanguages" % "0.1.8"
   )
 
 lazy val vscode = taskKey[Unit]("Run VS Code")

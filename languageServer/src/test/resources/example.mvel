@@ -44,7 +44,6 @@ for(int i = 0; i < dataPeriods.size(); i++){
 	// filingYear = String.valueOf(((DateRange) dataPeriods[i]).endDateUTC.year);
 	// taxEventsEffectiveWindowStartDateUTC = ((DateRange) dataPeriods[i]).startDateUTC;
 
-/*
 	if (taxEventsEffectiveWindowStartDateUTC < firstFilingStartDate)
 		taxEventsEffectiveWindowStartDateUTC = firstFilingStartDate;
 		tempTaxEvent = TaxEventGenerationBusinessOutput.TaxEventGenerationBusinessInfo
@@ -72,7 +71,7 @@ for(int i = 0; i < dataPeriods.size(); i++){
             //.paymentAddressCountryCode(((SellerDETaxConfig) input.getSellerJurisdictionTaxConfig()).taxOfficeInfo.bankAccountDetails.bankAddress.countryCode)
             .zeroFilingApplicable(false)
             .build();
-*/
+
 	output.taxEventGenerationBusinessInfos.add(tempTaxEvent);
     tempTaxEvent = TaxEventGenerationBusinessOutput.TaxEventGenerationBusinessInfo
         .builder()
